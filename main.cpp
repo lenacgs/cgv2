@@ -26,6 +26,8 @@ void display(void) {
 	glClearStencil(0);
 
 	initLights();
+	drawEixos();
+	desenhaEscadas();
 	drawSkybox();
 
 	glutSwapBuffers();
@@ -34,21 +36,13 @@ void display(void) {
 void updatePosition(){
 	lookx = obsPx + sens[0] * cos(phi);
 	lookz = obsPz - sens[0] * sin(phi);
+	looky = obsPy;
 	if(obsPx < 100 && obsPx > 25 && obsPz < 165 && obsPz > 125){
 		lookz++;
 	}
 	else if(!(obsPx < 100 && obsPx > 25 && obsPz < 165 && obsPz > 125)){
 		lookz--;
 	}
-
-	#ifdef DEBUG
-	printf("position x = %f\n", obsPx);
-	printf("position y = %f\n", obsPy);
-	printf("position z = %f\n", obsPz);
-	printf("lookat x = %f\n", lookx);
-	printf("lookat y = %f\n", looky);
-	printf("lookat z = %f\n", lookz);
-	#endif
 }
 
 void keyboardFunction(unsigned char key, int x, int y) {
@@ -78,9 +72,12 @@ void keyboardFunction(unsigned char key, int x, int y) {
 			obsPz += sens[0] * cos(-phi);
 			updatePosition();
 			break;
-		
-		/* // LIGHTS
-		case '0':
+		case 32:
+			obsPy += 2;
+			updatePosition();
+			break;
+		 // LIGHTS
+		/*case '0':
 			if(light[0]){
 				glDisable(GL_LIGHT7);
 				light[0] = 0;
@@ -168,7 +165,7 @@ int main(int argc, char** argv) {
 
 	glutCreateWindow("Movement: W A S D;  LookAt: Mouse Movement;  Lights: 1 - 3;");
 
-	//glutFullScreen();
+	glutFullScreen();
 	glutSetCursor(GLUT_CURSOR_NONE);
 
 	init();

@@ -7,9 +7,9 @@ void initVariables(void) {
 	wScreen = glutGet(GLUT_SCREEN_WIDTH);
 	hScreen = glutGet(GLUT_SCREEN_HEIGHT);
 
-	obsPx = 300;
+	obsPx = -50;
 	obsPy = 30;
-	obsPz = 100;
+	obsPz = -50;
 
 	lookx = 300;
 	looky = 35;
@@ -127,17 +127,17 @@ void init(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	glShadeModel(GL_SMOOTH);
-
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CCW);
+	//glEnable(GL_COLOR_MATERIAL);
+	//glEnable(GL_CULL_FACE);
+	//glCullFace(GL_BACK);
+	//glFrontFace(GL_CCW);
 
 	glEnable(GL_NORMALIZE);
 
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT7);
 
-	//glEnable(GL_COLOR_MATERIAL);
+	glEnable(GL_COLOR_MATERIAL);
 /*
 	if(light[1])
 		glEnable(GL_LIGHT0);
