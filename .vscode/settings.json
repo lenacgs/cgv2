@@ -1,0 +1,6 @@
+{
+	"files.associations": {
+		"*.dgo": "go",
+		"iostream": "cpp"
+	}
+}
