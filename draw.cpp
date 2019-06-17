@@ -1,9 +1,13 @@
 #include "definitions.h"
 #include "materials.h"
 
+GLfloat posEscada1, posEscada2, posEscada3;
+GLfloat alturaTelhado = 10.0;
 GLint nSteps=10;
+GLint move = 0;
 GLfloat altura=5.0, comprimento=200.0, profundidade=10.0;
-GLfloat coordParede1[]={300.0,0,0.0}, coordParede2[]={0.0,0,300.0}, coordParede3[]={300.0,0,600.0}, coordParede4[]={-300.0,0,0.0};
+GLfloat coordParede1[]={300.0,0,0.0}, coordParede2[]={0.0,0,300.0}, coordParede3[]={300.0,0,600.0}, coordParede4[]={510.0,0,300.0};
+GLfloat coordTelhado1[]={300.0,100.0,100.0}, coordTelhado2[]={100.0,100,300.0}, coordTelhado3[]={300.0,100,500.0}, coordTelhado4[]={500.0,100,300.0};
 
 void drawEixos()
 {	
@@ -76,49 +80,136 @@ void desenhaDegrau(GLfloat altura, GLfloat comprimento, GLfloat profundidade) {
 }
 
 void desenhaEscadas(){
-	int i;
-	GLfloat altura1, altura2, altura3, altura4;
-	GLfloat comprimento1, comprimento2, comprimento3, comprimento4;
-	GLfloat profundidade1, profundidade2, profundidade3, profundidade4;
-	GLfloat posX1, posX2, posX3, posX4;
-	GLfloat posY1, posY2, posY3, posY4;
-	GLfloat tempScale;
+	int i,j;
 	GLfloat steps=nSteps;
 	
-	//parede 1
-	for (i=0; i<nSteps; i++) {
-		glPushMatrix();
-			glTranslatef(coordParede1[0],altura*i*2,coordParede1[2]+profundidade*i);
-			glScalef((comprimento+(steps-i)*profundidade)/comprimento,1,(steps-i+1)/2);
-			desenhaDegrau(altura, comprimento, profundidade);
-		glPopMatrix();
+	
+	if(retract==0){ //aberto
+		//parede 1
+		for (i=0; i<nSteps; i++) {
+			glPushMatrix();
+				glTranslatef(coordParede1[0],altura*i*2,coordParede1[2]+profundidade*i);
+				glScalef(1+(((steps-i)*profundidade)/comprimento),1,(steps-i+1)/2);
+				desenhaDegrau(altura, comprimento, profundidade);
+			glPopMatrix();
+		}
+		posEscada1=coordParede1[2]+profundidade*(nSteps-1);
+		//parede 2
+		for (i=0; i<nSteps; i++) {
+			glPushMatrix();
+				glTranslatef(coordParede2[0]+profundidade*i,altura*i*2,coordParede2[2]);
+				glRotatef(90,0,1,0);
+				glScalef(1+(((steps-i)*profundidade)/comprimento),1,(steps-i+1)/2);
+				desenhaDegrau(altura, comprimento, profundidade);
+			glPopMatrix();
+		}
+		posEscada2=coordParede2[0]+profundidade*(nSteps-1);
+		//parede 3
+		for (i=0; i<nSteps; i++) {
+			glPushMatrix();
+				glTranslatef(coordParede3[0],altura*i*2,coordParede3[2]-profundidade*i);
+				glRotatef(180,0,1,0);
+				glScalef(1+(((steps-i)*profundidade)/comprimento),1,(steps-i+1)/2);
+				desenhaDegrau(altura, comprimento, profundidade);
+			glPopMatrix();
+		}
+		posEscada3=coordParede3[2]-profundidade*(nSteps-1);
 	}
-	//parede 2
-	tempScale=nSteps/2;
-	for (i=0; i<nSteps; i++) {
+	else if (retract==1){ //fecha
+		//parede 1
+		if(move<1000){
+			for (i=0; i<nSteps; i++) {
+				glPushMatrix();
+					glTranslatef(coordParede1[0],altura*i*2,coordParede1[2]+(move/1000)*(profundidade*(nSteps-1)));
+					glScalef(1+((1000-move)/1000)*(((steps-i)*profundidade)/comprimento),1,(steps-i+1)/2);
+					desenhaDegrau(altura, comprimento, profundidade);
+				glPopMatrix();
+				printf("move: %d\n",move);
+			}
+		}
+		else
+			retract = 2;
+		move++;
+	}
+	else if (retract == 3){ //abre
+		for (i=0; i<nSteps; i++) {
+			if(move>=0){
+				
+			}
+		}
+		retract = 0;
+	}
+	else if (retract == 2){ //fechado
+		//parede 1
+		for (i=0; i<nSteps; i++) {
+			glPushMatrix();
+				glTranslatef(coordParede1[0],altura*i*2,coordParede1[2]+profundidade*(nSteps-1));
+				desenhaDegrau(altura, comprimento, profundidade);
+			glPopMatrix();
+		}
+		//parede 2
+		for (i=0; i<nSteps; i++) {
+			glPushMatrix();
+				glTranslatef(coordParede2[0]+profundidade*(nSteps-1),altura*i*2,coordParede2[2]);
+				glRotatef(90,0,1,0);
+				desenhaDegrau(altura, comprimento, profundidade);
+			glPopMatrix();
+		}
+		//parede 3
+		for (i=0; i<nSteps; i++) {
+			glPushMatrix();
+				glTranslatef(coordParede3[0],altura*i*2,coordParede3[2]-profundidade*(nSteps-1));
+				glRotatef(180,0,1,0);
+				desenhaDegrau(altura, comprimento, profundidade);
+			glPopMatrix();
+		}
+	}
+}
+
+void desenhaParedePrincipal(){
+	glPushMatrix();
+		glTranslatef(coordParede4[0],coordParede4[1],coordParede4[2]);
+		glRotatef(-90,0,1,0);
+		desenhaDegrau((altura*nSteps*2)-altura,comprimento,profundidade);
+	glPopMatrix();
+}
+
+void desenhaTelhado(){
+	int i;
+	
+	for (i=0; i<alturaTelhado; i++) {
 		glPushMatrix();
-			glTranslatef(coordParede2[0]+profundidade*i,altura*i*2,coordParede2[2]);
+			glTranslatef(coordTelhado1[0],coordTelhado1[1]+altura*i*2,coordTelhado1[2]+profundidade*i);
+			glScalef(1+(2*(alturaTelhado-i)*profundidade)/comprimento,1,1);
+			desenhaDegrau(altura, 100, profundidade);
+		glPopMatrix();
+		
+		glPushMatrix();
+			glTranslatef(coordTelhado2[0]+profundidade*i,coordTelhado2[1]+altura*i*2,coordTelhado2[2]);
 			glRotatef(90,0,1,0);
-			glScalef((comprimento+(steps-i)*profundidade)/comprimento,1,(steps-i+1)/2);
-			desenhaDegrau(altura, comprimento, profundidade);
+			glScalef(1+(2*(alturaTelhado-i)*profundidade)/comprimento,1,1);
+			desenhaDegrau(altura, 100, profundidade);
 		glPopMatrix();
-		tempScale=tempScale-1;
-	}
-	//parede 3
-	for (i=0; i<nSteps; i++) {
+		
 		glPushMatrix();
-			glTranslatef(coordParede3[0],altura*i*2,coordParede3[2]-profundidade*i);
+			glTranslatef(coordTelhado3[0],coordTelhado3[1]+altura*i*2,coordTelhado3[2]-profundidade*i);
 			glRotatef(180,0,1,0);
-			glScalef((comprimento+(steps-i)*profundidade)/comprimento,1,(steps-i+1)/2);
-			desenhaDegrau(altura, comprimento, profundidade);
+			glScalef(1+(2*(alturaTelhado-i)*profundidade)/comprimento,1,1);
+			desenhaDegrau(altura, 100, profundidade);
+		glPopMatrix();
+		
+			glPushMatrix();
+			glTranslatef(coordTelhado4[0]-profundidade*i,coordTelhado4[1]+altura*i*2,coordTelhado4[2]);
+			glRotatef(-90,0,1,0);
+			glScalef(1+(2*(alturaTelhado-i)*profundidade)/comprimento,1,1);
+			desenhaDegrau(altura, 100, profundidade);
 		glPopMatrix();
 	}
-	/*for (i=0; i<nSteps; i++) {
-		glPushMatrix();
-			glTranslatef(coordParede4[0],coordParede4[1]*(i+1)*2,coordParede4[2]+profundidade*i);
-			desenhaDegrau(altura, comprimento, profundidade);
+	
+	glPushMatrix();
+			glTranslatef(300,200,200);
+			desenhaDegrau(altura, 100, 100);
 		glPopMatrix();
-	}*/
 }
 
 

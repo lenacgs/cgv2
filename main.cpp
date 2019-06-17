@@ -4,7 +4,7 @@ using namespace std;
 
 //variable declaration
 GLint wScreen, hScreen;
-
+GLint retract=0;
 GLfloat obsPx, obsPy, obsPz;
 GLfloat lookx, looky, lookz;
 GLfloat tetha, phi;
@@ -27,7 +27,10 @@ void display(void) {
 
 	initLights();
 	drawEixos();
+	
 	desenhaEscadas();
+	desenhaParedePrincipal();
+	desenhaTelhado();
 	drawSkybox();
 
 	glutSwapBuffers();
@@ -75,6 +78,14 @@ void keyboardFunction(unsigned char key, int x, int y) {
 		case 32:
 			obsPy += 2;
 			updatePosition();
+			break;
+		case 'r':
+		case 'R':
+			//usamos 4 estados para impedir que o utilizador feche a meio de abrir ou vice versa
+			if(retract==0) // 0- pode fechar
+				retract = 2; // 1- sinal para fechar
+			else if(retract == 2) //2- pode abrir
+				retract = 0; //3- sinal para abrir
 			break;
 		 // LIGHTS
 		/*case '0':

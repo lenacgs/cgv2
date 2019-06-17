@@ -17,6 +17,7 @@ extern GLfloat tetha, phi;
 extern GLfloat angZoom;
 extern int mouseX, mouseY;
 extern GLfloat sens[2];
+extern GLint retract;
 
 extern GLuint skybox[6];
 
@@ -30,3 +31,5 @@ void desenhaQuadrado(GLfloat tam, GLfloat r, GLfloat g, GLfloat b);
 void desenhaDegrau(GLfloat altura, GLfloat comprimento, GLfloat profundidade);
 void desenhaEscadas();
 void drawEixos();
+void desenhaParedePrincipal();
+void desenhaTelhado();
