@@ -20,6 +20,7 @@ extern GLfloat sens[2];
 extern GLint retract;
 
 extern GLuint skybox[6];
+extern GLuint textures[5];
 
 void initVariables();
 void initTextures();
@@ -27,9 +28,15 @@ void initLights();
 void init();
 
 void drawSkybox();
-void desenhaQuadrado(GLfloat tam, GLfloat r, GLfloat g, GLfloat b);
-void desenhaDegrau(GLfloat altura, GLfloat comprimento, GLfloat profundidade);
-void desenhaEscadas();
+void desenhaQuadrado(GLfloat tam, GLfloat r, GLfloat g, GLfloat b, GLint text, GLint lado, GLint tipo);
+void desenhaDegrau(GLfloat altura, GLfloat comprimento, GLfloat profundidade, GLint text, GLint tipo);
+void desenhaEscadas(GLint text);
 void drawEixos();
-void desenhaParedePrincipal();
-void desenhaTelhado();
+void desenhaParedePrincipal(GLint text);
+void desenhaTelhado(GLint text);
+void desenhaParede(GLfloat x, GLfloat y, GLfloat z);
+void desenhaInterior();
+void desenhaLampada (bool flag, bool flag2);
+void desenhaFocosExteriores();
+void desenhaAltar();
+void desenhaChao();

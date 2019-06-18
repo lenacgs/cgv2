@@ -13,6 +13,7 @@ GLfloat sens[2];
 int mouseX, mouseY;
 
 GLuint skybox[6];
+GLuint textures[5];
 
 void display(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -28,9 +29,13 @@ void display(void) {
 	initLights();
 	drawEixos();
 	
-	desenhaEscadas();
-	desenhaParedePrincipal();
-	desenhaTelhado();
+	desenhaEscadas(0);
+	desenhaParedePrincipal(0);
+	desenhaTelhado(1);
+	desenhaChao();
+	desenhaInterior();
+	desenhaFocosExteriores();
+	desenhaAltar();
 	drawSkybox();
 
 	glutSwapBuffers();

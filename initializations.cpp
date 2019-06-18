@@ -7,12 +7,12 @@ void initVariables(void) {
 	wScreen = glutGet(GLUT_SCREEN_WIDTH);
 	hScreen = glutGet(GLUT_SCREEN_HEIGHT);
 
-	obsPx = -50;
-	obsPy = 30;
-	obsPz = -50;
+	obsPx = 400;
+	obsPy = 20;
+	obsPz = 300;
 
 	lookx = 300;
-	looky = 35;
+	looky = 0;
 	lookz = 100;
 
 	tetha = 3;
@@ -111,15 +111,87 @@ void initTextures() {
 		imag.GetNumCols(),
 		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
 		imag.ImageData());
+	
+	//pedra
+	glGenTextures(1, &textures[0]);
+	glBindTexture(GL_TEXTURE_2D, textures[0]);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	imag.LoadBmpFile("Images/rock.bmp");
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+		imag.GetNumCols(),
+		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+		imag.ImageData());
+	
+	//tijolo
+	glGenTextures(1, &textures[1]);
+	glBindTexture(GL_TEXTURE_2D, textures[1]);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	imag.LoadBmpFile("Images/brick.bmp");
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+		imag.GetNumCols(),
+		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+		imag.ImageData());
+	
+	//madeira chao
+	glGenTextures(1, &textures[2]);
+	glBindTexture(GL_TEXTURE_2D, textures[2]);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	imag.LoadBmpFile("Images/wood.bmp");
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+		imag.GetNumCols(),
+		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+		imag.ImageData());
+		
+	//altar
+	glGenTextures(1, &textures[3]);
+	glBindTexture(GL_TEXTURE_2D, textures[3]);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	imag.LoadBmpFile("Images/altar.bmp");
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+		imag.GetNumCols(),
+		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+		imag.ImageData());
+		
+	//20 a CG
+	glGenTextures(1, &textures[4]);
+	glBindTexture(GL_TEXTURE_2D, textures[4]);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	imag.LoadBmpFile("Images/20.bmp");
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+		imag.GetNumCols(),
+		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+		imag.ImageData());
 }
 
 void initLights() {
 	GLfloat sunPos[4] = {1000.0, 1000.0, 0.0, 1.0};
 	GLfloat sunColor[4] = { 1.0, 1.0, 1.0, 1.0 };
+	
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, sunColor);
 
-	// GL_LIGHT7 - SUN
-	glLightfv(GL_LIGHT7, GL_POSITION, sunPos);
-	glLightfv(GL_LIGHT7, GL_AMBIENT, sunColor);
+	// GL_LIGHT0 - SUN
+	glLightfv(GL_LIGHT0, GL_POSITION, sunPos);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, sunColor);
 }
 
 void init(void) {
@@ -135,9 +207,9 @@ void init(void) {
 	glEnable(GL_NORMALIZE);
 
 	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT7);
+	glEnable(GL_LIGHT0);
 
-	glEnable(GL_COLOR_MATERIAL);
+	//glEnable(GL_COLOR_MATERIAL);
 /*
 	if(light[1])
 		glEnable(GL_LIGHT0);
