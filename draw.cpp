@@ -34,34 +34,18 @@ void drawEixos()
 
 void desenhaQuadrado(GLfloat tam, GLfloat r, GLfloat g, GLfloat b, GLint text, GLint lado, GLint tipo){ 
 //lado = face: 1- frente, 2- tras, 3- equerda, 4- direita, 5- cima, 6- baixo
-	glColor3f(255,255,255);
-	glEnable(GL_TEXTURE_2D);
-	if(text!=-1)
-		glBindTexture(GL_TEXTURE_2D, textures[text]);	
+	//glColor3f(255,255,255);
+	if(text!=-1){
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, textures[text]);
+	}
 	glBegin(GL_QUADS);
-		switch(lado){
-			case 1:
-				glNormal3i(0, 0, 1);
-				break;
-			case 2:
-				glNormal3i(0, 0, -1);
-				break;
-			case 3:
-				glNormal3i(1, 0, 0);
-				break;
-			case 4:
-				glNormal3i(-1, 0, 0);
-				break;
-			case 5:
-				glNormal3i(0, -1, 0);
-				break;
-			case 6:
-				glNormal3i(0, 1, 0);
-				break;
+		glNormal3i(0, 0, -1);
+		if(tipo!=8){
+			glMaterialfv(GL_FRONT, GL_AMBIENT, whiteAmb);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, whiteDif);
+			glMaterialfv(GL_FRONT, GL_SPECULAR, whiteSpec);
 		}
-		glMaterialfv(GL_FRONT, GL_AMBIENT, whiteAmb);
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, whiteDif);
-		glMaterialfv(GL_FRONT, GL_SPECULAR, whiteSpec);
 		if(tipo==1){//escada
 			if(lado==5 || lado == 6){
 				glTexCoord2f(0.0f, 0.0f); glVertex2f(0-tam , 0-tam );
@@ -94,14 +78,52 @@ void desenhaQuadrado(GLfloat tam, GLfloat r, GLfloat g, GLfloat b, GLint text, G
 			glTexCoord2f(1.0f, 1.0f); glVertex2f(0+tam , 0+tam );
 			glTexCoord2f(1.0f, 0.0f); glVertex2f(0+tam , 0-tam );
 		}
+		else if (tipo == 4){
+			glTexCoord2f(0.0f, 0.0f); glVertex2f(0-tam , 0-tam );
+			glTexCoord2f(0.0f, 4.0f); glVertex2f(0-tam , 0+tam );
+			glTexCoord2f(18.0f, 4.0f); glVertex2f(0+tam , 0+tam );
+			glTexCoord2f(18.0f, 0.0f); glVertex2f(0+tam , 0-tam );
+		}
+		else if (tipo == 5){
+			glTexCoord2f(0.0f, 0.0f); glVertex2f(0-tam , 0-tam );
+			glTexCoord2f(0.0f, 5.0f); glVertex2f(0-tam , 0+tam );
+			glTexCoord2f(5.0f, 5.0f); glVertex2f(0+tam , 0+tam );
+			glTexCoord2f(5.0f, 0.0f); glVertex2f(0+tam , 0-tam );
+		}
+		else if (tipo == 6){
+			glTexCoord2f(0.0f, 0.0f); glVertex2f(0-tam , 0-tam );
+			glTexCoord2f(0.0f, 6.0f); glVertex2f(0-tam , 0+tam );
+			glTexCoord2f(3.0f, 6.0f); glVertex2f(0+tam , 0+tam );
+			glTexCoord2f(3.0f, 0.0f); glVertex2f(0+tam , 0-tam );
+		}
+		else if (tipo == 7){
+			glTexCoord2f(0.0f, 0.0f); glVertex2f(0-tam , 0-tam );
+			glTexCoord2f(0.0f, 1.7f); glVertex2f(0-tam , 0+tam );
+			glTexCoord2f(2.7f, 1.7f); glVertex2f(0+tam , 0+tam );
+			glTexCoord2f(2.7f, 0.0f); glVertex2f(0+tam , 0-tam );
+		}
+		else if (tipo == 9){
+			glTexCoord2f(0.0f, 0.0f); glVertex2f(0-tam , 0-tam );
+			glTexCoord2f(0.0f, 7.0f); glVertex2f(0-tam , 0+tam );
+			glTexCoord2f(6.0f, 7.0f); glVertex2f(0+tam , 0+tam );
+			glTexCoord2f(6.0f, 0.0f); glVertex2f(0+tam , 0-tam );
+		}
+		else if (tipo == 8){
+			glMaterialfv(GL_FRONT, GL_AMBIENT, brownAmb);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, brownDif);
+			glVertex2f(0-tam , 0-tam );
+			glVertex2f(0-tam , 0+tam );
+			glVertex2f(0+tam , 0+tam );
+			glVertex2f(0+tam , 0-tam );
+		}
 		else if (tipo == -1){
 			glVertex2f(0-tam , 0-tam );
 			glVertex2f(0-tam , 0+tam );
 			glVertex2f(0+tam , 0+tam );
 			glVertex2f(0+tam , 0-tam );
 		}
-			
 	glEnd();
+	
 	glDisable(GL_TEXTURE_2D);
 }
 
@@ -227,12 +249,268 @@ void desenhaEscadas(GLint text){
 	}
 }
 
-void desenhaParedePrincipal(GLint text){ //lado da casa que nao tem escada
+void desenhaParedePrincipal(){ //lado da casa que nao tem escada
+
+	//PAREDES
+	
 	glPushMatrix();
-		glTranslatef(coordParede4[0],coordParede4[1],coordParede4[2]);
+		glTranslatef(coordParede4[0],coordParede4[1]+75,coordParede4[2]);
 		glRotatef(-90,0,1,0);
-		desenhaDegrau((altura*nSteps*2)-altura,comprimento,profundidade, text, 0);
+		desenhaParede((altura*nSteps)/2-altura,comprimento,profundidade/2,4);
 	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(coordParede4[0],coordParede4[1]+7,coordParede4[2]+167);
+		glRotatef(-90,0,1,0);
+		desenhaParede((altura*nSteps)-altura/3,comprimento/6,profundidade/2,5);
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(coordParede4[0],coordParede4[1]+7,coordParede4[2]-167);
+		glRotatef(-90,0,1,0);
+		desenhaParede((altura*nSteps)-altura/3,comprimento/6,profundidade/2,5);
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(coordParede4[0],coordParede4[1]+7,coordParede4[2]+50);
+		glRotatef(-90,0,1,0);
+		desenhaParede((altura*nSteps)-altura/3,20,profundidade/2,6);
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(coordParede4[0],coordParede4[1]+7,coordParede4[2]-50);
+		glRotatef(-90,0,1,0);
+		desenhaParede((altura*nSteps)-altura/3,20,profundidade/2,6);
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(coordParede4[0],coordParede4[1]+7,coordParede4[2]+102);
+		glRotatef(-90,0,1,0);
+		desenhaParede(10,32,profundidade/2,7);
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(coordParede4[0],coordParede4[1]+7,coordParede4[2]-102);
+		glRotatef(-90,0,1,0);
+		desenhaParede(10,32,profundidade/2,7);
+	glPopMatrix();
+	
+	//PORTAS
+	
+	glPushMatrix();
+		glTranslatef(510,27,315);
+		desenhaPorta();
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(510,27,285);
+		desenhaPorta();
+	glPopMatrix();
+	
+	//JANELAS
+	
+	glPushMatrix();
+		glTranslatef(505,15,201);
+		desenhaJanela();
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(505,15,404);
+		desenhaJanela();
+	glPopMatrix();
+}
+
+void desenhaPorta(){
+	glPushMatrix();
+		glRotatef(-90,0,1,0);
+		desenhaDegrau(28,15,profundidade/2,-1,8);
+	glPopMatrix();
+	
+	//textura
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, textures[5]);
+	
+	glPushMatrix();
+		glTranslatef(0.05,-28,15);
+		glRotatef(90,0,1,0);
+		glBegin(GL_QUADS);
+			glNormal3i(0,1,0);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, 0);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 56, 0);
+			glTexCoord2f(1.0f, 1.0f); glVertex3f(30, 56, 0);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f(30, 0, 0);
+		glEnd();
+	glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
+	
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, textures[5]);
+	glPushMatrix();
+		glTranslatef(-10.1,-28,-15);
+		glRotatef(-90,0,1,0);
+		glBegin(GL_QUADS);
+			glNormal3i(0,1,0);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, 0);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 56, 0);
+			glTexCoord2f(1.0f, 1.0f); glVertex3f(30, 56, 0);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f(30, 0, 0);
+		glEnd();
+	glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
+}
+
+void desenhaJanela(){
+
+	glPushMatrix();
+		glRotatef(90,0,1,0);
+		glBegin(GL_QUADS);
+			glNormal3i(0,1,0);
+			glMaterialfv(GL_FRONT, GL_AMBIENT, lightBrownAmb);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, lightBrownDif);
+			glVertex3f(0, 0, 0);
+			glVertex3f(0, 38, 0);
+			glVertex3f(5, 38, 0);
+			glVertex3f(5, 0, 0);
+		glEnd();
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(0,0,-31);
+		glRotatef(90,0,1,0);
+		glBegin(GL_QUADS);
+			glNormal3i(0,1,0);
+			glMaterialfv(GL_FRONT, GL_AMBIENT, lightBrownAmb);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, lightBrownDif);
+			glVertex3f(0, 0, 0);
+			glVertex3f(0, 41.5, 0);
+			glVertex3f(5, 41.5, 0);
+			glVertex3f(5, 0, 0);
+		glEnd();
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(0,0,31);
+		glRotatef(90,0,1,0);
+		glBegin(GL_QUADS);
+			glNormal3i(0,1,0);
+			glMaterialfv(GL_FRONT, GL_AMBIENT, lightBrownAmb);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, lightBrownDif);
+			glVertex3f(0, 0, 0);
+			glVertex3f(0, 41.5, 0);
+			glVertex3f(5, 41.5, 0);
+			glVertex3f(5, 0, 0);
+		glEnd();
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(0,0,-34);
+		glRotatef(90,1,0,0);
+		glRotatef(90,0,1,0);
+		glBegin(GL_QUADS);
+			glNormal3i(0,1,0);
+			glMaterialfv(GL_FRONT, GL_AMBIENT, lightBrownAmb);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, lightBrownDif);
+			glVertex3f(0, 0, 0);
+			glVertex3f(0, 64, 0);
+			glVertex3f(5, 64, 0);
+			glVertex3f(5, 0, 0);
+		glEnd();
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(0,36.5,-34);
+		glRotatef(90,1,0,0);
+		glRotatef(90,0,1,0);
+		glBegin(GL_QUADS);
+			glNormal3i(0,1,0);
+			glMaterialfv(GL_FRONT, GL_AMBIENT, lightBrownAmb);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, lightBrownDif);
+			glVertex3f(0, 0, 0);
+			glVertex3f(0, 64, 0);
+			glVertex3f(5, 64, 0);
+			glVertex3f(5, 0, 0);
+		glEnd();
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(0,18.25,-34);
+		glRotatef(90,1,0,0);
+		glRotatef(90,0,1,0);
+		glBegin(GL_QUADS);
+			glNormal3i(0,1,0);
+			glMaterialfv(GL_FRONT, GL_AMBIENT, lightBrownAmb);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, lightBrownDif);
+			glVertex3f(0, 0, 0);
+			glVertex3f(0, 64, 0);
+			glVertex3f(5, 64, 0);
+			glVertex3f(5, 0, 0);
+		glEnd();
+	glPopMatrix();
+	
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+	glPushMatrix();
+		glTranslatef(0,5,-5);
+		glRotatef(90,0,1,0);
+		glBegin(GL_QUADS);
+			glNormal3i(0,1,0);
+			glMaterialfv(GL_FRONT, GL_AMBIENT, glassAmb);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, glassDif);
+			glMaterialfv(GL_FRONT, GL_SPECULAR, glassSpec);
+			glVertex3f(0, 0, 0);
+			glVertex3f(0, 13.25, 0);
+			glVertex3f(26, 13.25, 0);
+			glVertex3f(26, 0, 0);
+		glEnd();
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(0,5,26);
+		glRotatef(90,0,1,0);
+		glBegin(GL_QUADS);
+			glNormal3i(0,1,0);
+			glMaterialfv(GL_FRONT, GL_AMBIENT, glassAmb);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, glassDif);
+			glMaterialfv(GL_FRONT, GL_SPECULAR, glassSpec);
+			glVertex3f(0, 0, 0);
+			glVertex3f(0, 13.25, 0);
+			glVertex3f(26, 13.25, 0);
+			glVertex3f(26, 0, 0);
+		glEnd();
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(0,23.25,26);
+		glRotatef(90,0,1,0);
+		glBegin(GL_QUADS);
+			glNormal3i(0,1,0);
+			glMaterialfv(GL_FRONT, GL_AMBIENT, glassAmb);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, glassDif);
+			glMaterialfv(GL_FRONT, GL_SPECULAR, glassSpec);
+			glVertex3f(0, 0, 0);
+			glVertex3f(0, 13.25, 0);
+			glVertex3f(26, 13.25, 0);
+			glVertex3f(26, 0, 0);
+		glEnd();
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(0,23.25,-5);
+		glRotatef(90,0,1,0);
+		glBegin(GL_QUADS);
+			glNormal3i(0,1,0);
+			glMaterialfv(GL_FRONT, GL_AMBIENT, glassAmb);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, glassDif);
+			glMaterialfv(GL_FRONT, GL_SPECULAR, glassSpec);
+			glVertex3f(0, 0, 0);
+			glVertex3f(0, 13.25, 0);
+			glVertex3f(26, 13.25, 0);
+			glVertex3f(26, 0, 0);
+		glEnd();
+	glPopMatrix();
+	
+	glDisable(GL_BLEND);
 }
 
 void desenhaTelhado(GLint text){
@@ -268,34 +546,69 @@ void desenhaTelhado(GLint text){
 	}
 	//tampinha do telhado
 	glPushMatrix();
-		glTranslatef(300,200,200);
+		glTranslatef(300,200,400);
+		glRotatef(180,0,1,0);
 		desenhaDegrau(altura, 100, 100, text, 0);
 	glPopMatrix();
 }
 
-void desenhaParede(GLfloat x, GLfloat y, GLfloat z){
+void desenhaParede(GLfloat x, GLfloat y, GLfloat z, GLint tipo){
 	glPushMatrix();
-		desenhaDegrau(x, y, z, 0, 0);
+		desenhaDegrau(x, y, z, 0, tipo);
 	glPopMatrix();
 }
 
 void desenhaInterior(){
+	
+	//parede da primeira sala
 	glPushMatrix();
 		glTranslatef(350,0,300);
 		glRotatef(90,0,1,0);
-		desenhaParede(altura*nSteps*2,200,profundidade/2);
+		desenhaParede(altura*nSteps*2,50,profundidade/2,9);
 	glPopMatrix();
 	
 	glPushMatrix();
-		glTranslatef(230,0,300);
-		desenhaParede(altura*nSteps*2,125,profundidade/2);
+		glTranslatef(350,0,440);
+		glRotatef(90,0,1,0);
+		desenhaParede(altura*nSteps*2,50,profundidade/2,9);
 	glPopMatrix();
 	
+	glPushMatrix();
+		glTranslatef(350,0,160);
+		glRotatef(90,0,1,0);
+		desenhaParede(altura*nSteps*2,50,profundidade/2,9);
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(350,70,230);
+		glRotatef(90,0,1,0);
+		desenhaParede(20,20,profundidade/2,7);
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(350,70,370);
+		glRotatef(90,0,1,0);
+		desenhaParede(20,20,profundidade/2,7);
+	glPopMatrix();
+	
+	//parede das duas divisoes
+	glPushMatrix();
+		glTranslatef(230,0,300);
+		desenhaParede(altura*nSteps*2,125,profundidade/2,0);
+	glPopMatrix();
+	
+	//teto
 	glPushMatrix();
 		glTranslatef(300,altura*nSteps*2,300);
 		glRotatef(90,1,0,0);
-		desenhaParede(200,200,profundidade/2);
+		desenhaParede(200,200,profundidade/2,0);
 	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(190,0.001,150);
+		desenhaTapete();
+	glPopMatrix();
+	
 }
 
 void desenhaChao(){
@@ -309,18 +622,20 @@ void desenhaChao(){
 		glMaterialfv(GL_FRONT, GL_AMBIENT, whiteAmb);
 		glMaterialfv(GL_FRONT, GL_DIFFUSE, whiteDif);
 		glMaterialfv(GL_FRONT, GL_SPECULAR, whiteSpec);
-		for (x = 100; x < 500; x += 10) {
+		for (x = 100; x < 510; x += 10) {
 			for (z = 100; z < 500; z += 10) {
-				glTexCoord2f(0.0f, 0.0f); glVertex3f(x, 0, z);
-				glTexCoord2f(0.0f, 1.0f); glVertex3f(x, 0, z + 10);
-				glTexCoord2f(1.0f, 1.0f); glVertex3f(x + 10, 0, z + 10);
-				glTexCoord2f(1.0f, 0.0f); glVertex3f(x + 10, 0, z);
+				glTexCoord2f(0.0f, 0.0f); glVertex3f(x, -0.94, z);
+				glTexCoord2f(0.0f, 1.0f); glVertex3f(x, -0.94, z + 10);
+				glTexCoord2f(1.0f, 1.0f); glVertex3f(x + 10, -0.94, z + 10);
+				glTexCoord2f(1.0f, 0.0f); glVertex3f(x + 10, -0.94, z);
 			}
 		}
 		glEnd();
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
 }
+
+
 
 void desenhaLampada (bool flag, bool flag2){
 	GLUquadricObj* quadric = gluNewQuadric();  
@@ -363,148 +678,204 @@ void desenhaLampada (bool flag, bool flag2){
 
 void desenhaFocosExteriores(){
 	glPushMatrix();
-		glTranslatef(-5,0,-5);
-		glRotatef(-90,0,1,0);
-		glRotatef(-230,1,0,1);
-		desenhaLampada(true, false);
-	glPopMatrix();
-	
-	glPushMatrix();
-		glTranslatef(-5,0,605);
-		glRotatef(-230,1,0,1);
-		desenhaLampada(true, false);
-	glPopMatrix();
-	
-	glPushMatrix();
 		glTranslatef(605,0,-5);
 		glRotatef(180,0,1,0);
 		glRotatef(-230,1,0,1);
-		desenhaLampada(true, false);
+		if(lights2)
+			desenhaLampada(true, false);
+		else
+			desenhaLampada(false, false);
 	glPopMatrix();
 	
 	glPushMatrix();
 		glTranslatef(605,0,605);
 		glRotatef(90,0,1,0);
 		glRotatef(-230,1,0,1);
-		desenhaLampada(true, false);
+		if(lights2)
+			desenhaLampada(true, false);
+		else
+			desenhaLampada(false, false);
 	glPopMatrix();
 }
 
+void desenhaLuzesInterior(){
+	glPushMatrix();
+		glTranslatef(410,82,300);
+		if(lights1)
+			desenhaLampada(true, true);
+		else
+			desenhaLampada(false, true);
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(300,82,200);
+		if(lights1)
+			desenhaLampada(true, true);
+		else
+			desenhaLampada(false, true);
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(150,82,200);
+		if(lights1)
+			desenhaLampada(true, true);
+		else
+			desenhaLampada(false, true);
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(300,82,400);
+		if(lights1)
+			desenhaLampada(true, true);
+		else
+			desenhaLampada(false, true);
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(150,82,400);
+		if(lights1)
+			desenhaLampada(true, true);
+		else
+			desenhaLampada(false, true);
+	glPopMatrix();
+}
+
+void desenhaTapete(){
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, textures[6]);
+	glPushMatrix();
+		glRotatef(90,1,0,0);
+		glBegin(GL_QUADS);
+			glNormal3i(0,1,0);
+			glMaterialfv(GL_FRONT, GL_AMBIENT, whiteAmb);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, whiteDif);
+			glMaterialfv(GL_FRONT, GL_SPECULAR, whiteSpec);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, 0);
+			glTexCoord2f(2.3f, 0.0f); glVertex3f(0, 80, 0);
+			glTexCoord2f(2.3f, 2.5f); glVertex3f(80, 80, 0);
+			glTexCoord2f(0.0f, 2.5f); glVertex3f(80, 0, 0);
+		glEnd();
+	glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
+}
+
 void desenhaAltar(){
-		//degraus laterais
-		//------------------------------------------------------
-		glPushMatrix();
-			glTranslatef(440,4,300);
-			glRotatef(90,0,1,0);
-			desenhaDegrau(4,15,3,3,2);
-		glPopMatrix();
-		
-		glPushMatrix();
-			glTranslatef(373.9,4,300);
-			glRotatef(90,0,1,0);
-			desenhaDegrau(4,15,3,3,2);
-		glPopMatrix();
-		
-		glPushMatrix();
-			glTranslatef(431.2,4,321.1);
-			glRotatef(45,0,1,0);
-			desenhaDegrau(4,15,3,3,2);
-		glPopMatrix();
-		
-		glPushMatrix();
-			glTranslatef(435.3,4,274.3);
-			glRotatef(-45,0,1,0);
-			desenhaDegrau(4,15,3,3,2);
-		glPopMatrix();
-		
-		glPushMatrix();
-			glTranslatef(410,4,263.8);
-			desenhaDegrau(4,15,3,3,2);
-		glPopMatrix();
-		
-		glPushMatrix();
-			glTranslatef(410,4,330);
-			desenhaDegrau(4,15,3,3,2);
-		glPopMatrix();
-		
-		glPushMatrix();
-			glTranslatef(388.55,4,321);
-			glRotatef(-45,0,1,0);
-			desenhaDegrau(4,15,3,3,2);
-		glPopMatrix();
-		
-		glPushMatrix();
-			glTranslatef(384.5,4,274.4);
-			glRotatef(45,0,1,0);
-			desenhaDegrau(4,15,3,3,2);
-		glPopMatrix();
-		
-		//--------------------------------------------------
-		//tampa de cima do altar
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, textures[3]);
-		glPushMatrix();
-			glTranslatef(410,8.5,300);
-			glRotatef(22.5,0,1,0);
-			glRotatef(90,1,0,0);
-			glBegin(GL_POLYGON);
-				glNormal3i(0,1,0);
-				glMaterialfv(GL_FRONT, GL_AMBIENT, whiteAmb);
-				glMaterialfv(GL_FRONT, GL_DIFFUSE, whiteDif);
-				glMaterialfv(GL_FRONT, GL_SPECULAR, whiteSpec);
-				for(int i=0;i<=8;i++){
-					double anglo=i*2*PI/8;
-					if(i==0)
-						glTexCoord2f(0.25f, 0.0f);
-					if(i==1)
-						glTexCoord2f(0.75f, 0.0f);
-					if(i==2)
-						glTexCoord2f(1.0f, 0.25f);
-					if(i==3)
-						glTexCoord2f(1.0f, 0.75f);
-					if(i==4)
-						glTexCoord2f(0.75f, 1.0f);
-					if(i==5)
-						glTexCoord2f(0.25f, 1.0f);
-					if(i==6)
-						glTexCoord2f(0.0f, 0.75f);
-					if(i==7)
-						glTexCoord2f(0.0f, 0.25f);
-					
-					glVertex2d(35*cos(anglo),35*sin(anglo));
-				}
-			glEnd();
-		glPopMatrix();
-		glDisable(GL_TEXTURE_2D);
-		
-		//quadro 20 a CG
-		//frame
-		glPushMatrix();
-			glTranslatef(407,38,300);
-			glRotatef(90,0,1,0);
-			desenhaDegrau(30,30,3,-1,-1);
-		glPopMatrix();
-		
-		
-		//quadro
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, textures[4]);
-		glPushMatrix();
-			glTranslatef(413.1,8,330);
-			glRotatef(-90,0,1,0);
-			glRotatef(90,0,0,1);
-			glBegin(GL_QUADS);
-				glNormal3i(0,1,0);
-				glMaterialfv(GL_FRONT, GL_AMBIENT, whiteAmb);
-				glMaterialfv(GL_FRONT, GL_DIFFUSE, whiteDif);
-				glMaterialfv(GL_FRONT, GL_SPECULAR, whiteSpec);
-				glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, 0);
-				glTexCoord2f(1.0f, 0.0f); glVertex3f(0, 60, 0);
-				glTexCoord2f(1.0f, 1.0f); glVertex3f(60, 60, 0);
-				glTexCoord2f(0.0f, 1.0f); glVertex3f(60, 0, 0);
-			glEnd();
-		glPopMatrix();
-		glDisable(GL_TEXTURE_2D);
+	//degraus laterais
+	//------------------------------------------------------
+	glPushMatrix();
+		glTranslatef(440,4,300);
+		glRotatef(90,0,1,0);
+		desenhaDegrau(4,15,3,3,2);
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(373.9,4,300);
+		glRotatef(90,0,1,0);
+		desenhaDegrau(4,15,3,3,2);
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(431.2,4,321.1);
+		glRotatef(45,0,1,0);
+		desenhaDegrau(4,15,3,3,2);
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(435.3,4,274.3);
+		glRotatef(-45,0,1,0);
+		desenhaDegrau(4,15,3,3,2);
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(410,4,263.8);
+		desenhaDegrau(4,15,3,3,2);
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(410,4,330);
+		desenhaDegrau(4,15,3,3,2);
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(388.55,4,321);
+		glRotatef(-45,0,1,0);
+		desenhaDegrau(4,15,3,3,2);
+	glPopMatrix();
+	
+	glPushMatrix();
+		glTranslatef(384.5,4,274.4);
+		glRotatef(45,0,1,0);
+		desenhaDegrau(4,15,3,3,2);
+	glPopMatrix();
+	
+	//--------------------------------------------------
+	//tampa de cima do altar
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, textures[3]);
+	glPushMatrix();
+		glTranslatef(410,8.5,300);
+		glRotatef(22.5,0,1,0);
+		glRotatef(-90,1,0,0);
+		glBegin(GL_POLYGON);
+			glNormal3i(0,1,0);
+			glMaterialfv(GL_FRONT, GL_AMBIENT, whiteAmb);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, whiteDif);
+			glMaterialfv(GL_FRONT, GL_SPECULAR, whiteSpec);
+			for(int i=0;i<=8;i++){
+				double anglo=i*2*PI/8;
+				if(i==0)
+					glTexCoord2f(0.25f, 0.0f);
+				if(i==1)
+					glTexCoord2f(0.75f, 0.0f);
+				if(i==2)
+					glTexCoord2f(1.0f, 0.25f);
+				if(i==3)
+					glTexCoord2f(1.0f, 0.75f);
+				if(i==4)
+					glTexCoord2f(0.75f, 1.0f);
+				if(i==5)
+					glTexCoord2f(0.25f, 1.0f);
+				if(i==6)
+					glTexCoord2f(0.0f, 0.75f);
+				if(i==7)
+					glTexCoord2f(0.0f, 0.25f);
+				
+				glVertex2d(35*cos(anglo),35*sin(anglo));
+			}
+		glEnd();
+	glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
+	
+	//quadro 20 a CG
+	//frame
+	glPushMatrix();
+		glTranslatef(407,38,300);
+		glRotatef(90,0,1,0);
+		desenhaDegrau(30,30,3,-1,-1);
+	glPopMatrix();
+	
+	
+	//quadro
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, textures[4]);
+	glPushMatrix();
+		glTranslatef(413.1,8,330);
+		glRotatef(-90,0,1,0);
+		glRotatef(90,0,0,1);
+		glBegin(GL_QUADS);
+			glNormal3i(0,1,0);
+			glMaterialfv(GL_FRONT, GL_AMBIENT, whiteAmb);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, whiteDif);
+			glMaterialfv(GL_FRONT, GL_SPECULAR, whiteSpec);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, 0);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f(0, 60, 0);
+			glTexCoord2f(1.0f, 1.0f); glVertex3f(60, 60, 0);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(60, 0, 0);
+		glEnd();
+	glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
+	
+	
 }
 
 
@@ -519,10 +890,10 @@ void drawSkybox() {
 		glBegin(GL_QUADS);
 			//World Floor
 			glNormal3i(0, 1, 0);
-			glTexCoord2f(0.055f, 0.055f); glVertex3f(-2000, -1, -2000);
-			glTexCoord2f(0.055f, 1.0f); glVertex3f(-2000, -1, 2000);
-			glTexCoord2f(1.0f, 1.0f); glVertex3f(2000, -1, 2000);
-			glTexCoord2f(1.0f, 0.055f); glVertex3f(2000, -1, -2000);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(-2000, -1, -2000);
+			glTexCoord2f(0.0f, 20.0f); glVertex3f(-2000, -1, 2000);
+			glTexCoord2f(20.0f, 20.0f); glVertex3f(2000, -1, 2000);
+			glTexCoord2f(20.0f, 0.0f); glVertex3f(2000, -1, -2000);
 		glEnd();
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
@@ -597,7 +968,7 @@ void drawSkybox() {
 		glBegin(GL_QUADS);
 
 		glNormal3i(1, 0, 0);
-		glTexCoord2f(0.055f, 0.055f); glVertex3f(-2000, -1, -2000);
+		glTexCoord2f(0.055f, 0.0f); glVertex3f(-2000, -1, -2000);
 		glTexCoord2f(0.055f, 1.0f); glVertex3f(-2000, 2000, -2000);
 		glTexCoord2f(1.0f, 1.0f); glVertex3f(-2000, 2000, 2000);
 		glTexCoord2f(1.0f, 0.055f); glVertex3f(-2000, -1, 2000);

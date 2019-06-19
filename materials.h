@@ -13,9 +13,9 @@
 #endif
 GLfloat nullColor[] = { 0, 0, 0 };
 
-GLfloat glassAmb[] = { 0.5, 0.5, 0.5, 0.1};
-GLfloat glassDif[] = { 0.1, 0.1, 0.1, 0.1};
-GLfloat glassSpec[] = { 1, 1, 1, 0.1};
+GLfloat glassAmb[] = { 0.5, 0.5, 0.5, 0.3};
+GLfloat glassDif[] = { 0.1, 0.1, 0.1, 0.3};
+GLfloat glassSpec[] = { 1, 1, 1, 0.3};
 
 GLfloat whiteAmb[] = { 0.2 ,0.2 ,0.2 };
 GLfloat whiteDif[] = { 0.75 ,0.75 ,0.75 };

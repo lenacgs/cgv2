@@ -7,9 +7,9 @@ void initVariables(void) {
 	wScreen = glutGet(GLUT_SCREEN_WIDTH);
 	hScreen = glutGet(GLUT_SCREEN_HEIGHT);
 
-	obsPx = 400;
+	obsPx = 525;
 	obsPy = 20;
-	obsPz = 300;
+	obsPz = 225;
 
 	lookx = 300;
 	looky = 0;
@@ -25,6 +25,7 @@ void initVariables(void) {
 
 	sens[0] = 2.5;
 	sens[1] = (GLfloat) 0.025;
+	
 }
 
 void initTextures() {
@@ -34,8 +35,8 @@ void initTextures() {
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	imag.LoadBmpFile("Images/skybox/floor.bmp");
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
 		imag.GetNumCols(),
@@ -181,18 +182,141 @@ void initTextures() {
 		imag.GetNumCols(),
 		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
 		imag.ImageData());
+		
+	//PORTA
+	glGenTextures(1, &textures[5]);
+	glBindTexture(GL_TEXTURE_2D, textures[5]);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	imag.LoadBmpFile("Images/door.bmp");
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+		imag.GetNumCols(),
+		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+		imag.ImageData());
+	
+	//TAPETE
+	glGenTextures(1, &textures[6]);
+	glBindTexture(GL_TEXTURE_2D, textures[6]);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	imag.LoadBmpFile("Images/tapete.bmp");
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+		imag.GetNumCols(),
+		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+		imag.ImageData());
 }
 
 void initLights() {
+	//-------------------------------------------
 	GLfloat sunPos[4] = {1000.0, 1000.0, 0.0, 1.0};
-	GLfloat sunColor[4] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat sunColor[4] = { 4.0, 4.0, 4.0, 1.0 };
+	//-------------------------------------------
+	GLfloat luzAltarPos[4] = {410.0, 80.0, 300.0, 1.0};
+	//-------------------------------------------
+	GLfloat luzDivisaoEsq1Pos[4] = {150.0, 80.0, 400.0, 1.0};
+	//-------------------------------------------
+	GLfloat luzDivisaoEsq2Pos[4] = {300.0, 80.0, 400.0, 1.0};
+	//-------------------------------------------
+	GLfloat luzDivisaoDir1Pos[4] = {150.0, 80.0, 200.0, 1.0};
+	//-------------------------------------------
+	GLfloat luzDivisaoDir2Pos[4] = {300.0, 80.0, 200.0, 1.0};
+	//-------------------------------------------
+	GLfloat luzExterior1Pos[4] = {610.0, 0.0, 0.0, 1.0};
+	GLfloat luzExterior1Dir[3] = {-1.0, 1.0, 1.0};
+	//-------------------------------------------
+	GLfloat luzExterior2Pos[4] = {610.0, 0.0, 610.0, 1.0};
+	GLfloat luzExterior2Dir[3] = {-1.0, 1.0, -1.0};
+	//-------------------------------------------
+	GLfloat luzCor[4] = {1.0, 1.0, 1.0, 1.0};
+	GLfloat luzCorDif[4] = {1, 1, 1, 1.0}; 
+	GLfloat luzCorSpec[4] = { 0, 0, 0, 0.0 };
+	GLfloat luzInteriorAttCon =1.0;
+	GLfloat luzInteriorAttLin =0.1;
+	GLfloat luzExteriorAttCon =1.0;
+	GLfloat luzExteriorAttLin =0.08;
+	//-------------------------------------------
 	
+	// -------------- LUZ AMBIENTE --------------
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, sunColor);
+	//-------------------------------------------
 
-	// GL_LIGHT0 - SUN
+	//------------- GL_LIGHT0 - SUN -------------
 	glLightfv(GL_LIGHT0, GL_POSITION, sunPos);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, sunColor);
-}
+	//-------------------------------------------
+	
+	//------------ GL_LIGHT1 - ALTAR ------------
+	glLightfv(GL_LIGHT1, GL_POSITION, luzAltarPos);
+	glLightfv(GL_LIGHT1, GL_AMBIENT, luzCor);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, luzCorDif);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, luzCorSpec);
+	glLightf (GL_LIGHT1, GL_CONSTANT_ATTENUATION, luzInteriorAttCon);
+	glLightf (GL_LIGHT1, GL_LINEAR_ATTENUATION, luzInteriorAttLin);
+	//-------------------------------------------
+	
+	//-------- GL_LIGHT2 - DIVISAO ESQ 1 --------
+	glLightfv(GL_LIGHT2, GL_POSITION, luzDivisaoEsq1Pos);
+	glLightfv(GL_LIGHT2, GL_AMBIENT, luzCor);
+	glLightfv(GL_LIGHT2, GL_DIFFUSE, luzCorDif);
+	glLightfv(GL_LIGHT2, GL_SPECULAR, luzCorSpec);
+	glLightf (GL_LIGHT2, GL_CONSTANT_ATTENUATION, luzInteriorAttCon);
+	glLightf (GL_LIGHT2, GL_LINEAR_ATTENUATION, luzInteriorAttLin);
+	//-------------------------------------------
+	
+	//-------- GL_LIGHT3 - DIVISAO ESQ 2 --------
+	glLightfv(GL_LIGHT3, GL_POSITION, luzDivisaoEsq2Pos);
+	glLightfv(GL_LIGHT3, GL_AMBIENT, luzCor);
+	glLightfv(GL_LIGHT3, GL_DIFFUSE, luzCorDif);
+	glLightfv(GL_LIGHT3, GL_SPECULAR, luzCorSpec);
+	glLightf (GL_LIGHT3, GL_CONSTANT_ATTENUATION, luzInteriorAttCon);
+	glLightf (GL_LIGHT3, GL_LINEAR_ATTENUATION, luzInteriorAttLin);
+	//-------------------------------------------
+	
+	//-------- GL_LIGHT4 - DIVISAO DIR 1 --------
+	glLightfv(GL_LIGHT4, GL_POSITION, luzDivisaoDir1Pos);
+	glLightfv(GL_LIGHT4, GL_AMBIENT, luzCor);
+	glLightfv(GL_LIGHT4, GL_DIFFUSE, luzCorDif);
+	glLightfv(GL_LIGHT4, GL_SPECULAR, luzCorSpec);
+	glLightf (GL_LIGHT4, GL_CONSTANT_ATTENUATION, luzInteriorAttCon);
+	glLightf (GL_LIGHT4, GL_LINEAR_ATTENUATION, luzInteriorAttLin);
+	//-------------------------------------------
+	
+	//-------- GL_LIGHT5 - DIVISAO DIR 2 --------
+	glLightfv(GL_LIGHT5, GL_POSITION, luzDivisaoDir2Pos);
+	glLightfv(GL_LIGHT5, GL_AMBIENT, luzCor);
+	glLightfv(GL_LIGHT5, GL_DIFFUSE, luzCorDif);
+	glLightfv(GL_LIGHT5, GL_SPECULAR, luzCorSpec);
+	glLightf (GL_LIGHT5, GL_CONSTANT_ATTENUATION, luzInteriorAttCon);
+	glLightf (GL_LIGHT5, GL_LINEAR_ATTENUATION, luzInteriorAttLin);
+	//-------------------------------------------
+	
+	// --------- GL_LIGHT6 - EXTERIOR 1 ---------
+	glLightfv(GL_LIGHT6, GL_POSITION, luzExterior1Pos);
+	glLightfv(GL_LIGHT6, GL_SPOT_DIRECTION, luzExterior1Dir);
+	glLightfv(GL_LIGHT6, GL_AMBIENT, luzCor);
+	glLightfv(GL_LIGHT6, GL_DIFFUSE, luzCorDif);
+	glLightfv(GL_LIGHT6, GL_SPECULAR, luzCorSpec);
+	glLightf (GL_LIGHT6, GL_CONSTANT_ATTENUATION, luzExteriorAttCon);
+	glLightf (GL_LIGHT6, GL_LINEAR_ATTENUATION, luzExteriorAttLin);
+	//-------------------------------------------
+	
+	// --------- GL_LIGHT7 - EXTERIOR 2 ---------
+	glLightfv(GL_LIGHT7, GL_POSITION, luzExterior2Pos);
+	glLightfv(GL_LIGHT7, GL_SPOT_DIRECTION, luzExterior2Dir);
+	glLightfv(GL_LIGHT7, GL_AMBIENT, luzCor);
+	glLightfv(GL_LIGHT7, GL_DIFFUSE, luzCorDif);
+	glLightfv(GL_LIGHT7, GL_SPECULAR, luzCorSpec);
+	glLightf (GL_LIGHT7, GL_CONSTANT_ATTENUATION, luzExteriorAttCon);
+	glLightf (GL_LIGHT7, GL_LINEAR_ATTENUATION, luzExteriorAttLin);
+	//-------------------------------------------
+	
+}	
 
 void init(void) {
 	glClearColor(1.0, 1.0, 1.0, 1.0);
@@ -205,23 +329,12 @@ void init(void) {
 	//glFrontFace(GL_CCW);
 
 	glEnable(GL_NORMALIZE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
+	//glEnable(GL_LIGHT0);
 
-	//glEnable(GL_COLOR_MATERIAL);
-/*
-	if(light[1])
-		glEnable(GL_LIGHT0);
-	if(light[2])
-		glEnable(GL_LIGHT1);
-	if(light[3])
-		glEnable(GL_LIGHT2);
-	if(light[4])
-		glEnable(GL_LIGHT3);
-	if(fog)
-		glEnable(GL_FOG);
- */
 
 	glEnable(GL_DEPTH_TEST);
 

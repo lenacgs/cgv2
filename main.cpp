@@ -10,10 +10,19 @@ GLfloat lookx, looky, lookz;
 GLfloat tetha, phi;
 GLfloat angZoom;
 GLfloat sens[2];
+bool fog;
+GLfloat fogColor[] = { 0.3, 0.3, 0.3, 1 };
+bool lights1, lights2;
 int mouseX, mouseY;
 
 GLuint skybox[6];
-GLuint textures[5];
+GLuint textures[7];
+
+void drawFog() {
+	glFogfv(GL_FOG_COLOR, fogColor);
+	glFogi(GL_FOG_MODE, GL_EXP);
+	glFogf(GL_FOG_DENSITY, 0.0005);
+}
 
 void display(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -27,17 +36,20 @@ void display(void) {
 	glClearStencil(0);
 
 	initLights();
-	drawEixos();
-	
+	//drawEixos();
+	desenhaAltar();
 	desenhaEscadas(0);
-	desenhaParedePrincipal(0);
 	desenhaTelhado(1);
 	desenhaChao();
 	desenhaInterior();
 	desenhaFocosExteriores();
-	desenhaAltar();
+	desenhaLuzesInterior();
 	drawSkybox();
-
+	desenhaTapete();
+	drawFog();
+	
+	desenhaParedePrincipal();
+	
 	glutSwapBuffers();
 }
 
@@ -84,6 +96,11 @@ void keyboardFunction(unsigned char key, int x, int y) {
 			obsPy += 2;
 			updatePosition();
 			break;
+		case 'z':
+		case 'Z':
+			obsPy -= 2;
+			updatePosition();
+			break;
 		case 'r':
 		case 'R':
 			//usamos 4 estados para impedir que o utilizador feche a meio de abrir ou vice versa
@@ -91,6 +108,46 @@ void keyboardFunction(unsigned char key, int x, int y) {
 				retract = 2; // 1- sinal para fechar
 			else if(retract == 2) //2- pode abrir
 				retract = 0; //3- sinal para abrir
+			break;
+		case 'l':
+		case 'L':
+			lights1=!lights1;
+			if(lights1){
+				glEnable(GL_LIGHT1);
+				glEnable(GL_LIGHT2);
+				glEnable(GL_LIGHT3);
+				glEnable(GL_LIGHT4);
+				glEnable(GL_LIGHT5);
+				
+			}
+			else{
+				glDisable(GL_LIGHT1);
+				glDisable(GL_LIGHT2);
+				glDisable(GL_LIGHT3);
+				glDisable(GL_LIGHT4);
+				glDisable(GL_LIGHT5);
+				
+			}
+			break;
+		case 'p':
+		case 'P':
+			lights2=!lights2;
+			if(lights2){
+				glEnable(GL_LIGHT6);
+				glEnable(GL_LIGHT7);
+			}
+			else{
+				glDisable(GL_LIGHT6);
+				glDisable(GL_LIGHT7);
+			}
+			break;
+		case 'f':
+		case 'F':
+			fog=!fog;
+			if(fog)
+				glEnable(GL_FOG);
+			else
+				glDisable(GL_FOG);
 			break;
 		 // LIGHTS
 		/*case '0':
