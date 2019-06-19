@@ -7,9 +7,9 @@ void initVariables(void) {
 	wScreen = glutGet(GLUT_SCREEN_WIDTH);
 	hScreen = glutGet(GLUT_SCREEN_HEIGHT);
 
-	obsPx = 525;
+	obsPx = 0;
 	obsPy = 20;
-	obsPz = 225;
+	obsPz = 0;
 
 	lookx = 300;
 	looky = 0;

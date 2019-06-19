@@ -37,6 +37,7 @@ void display(void) {
 
 	initLights();
 	//drawEixos();
+	desenhaLareira();
 	desenhaAltar();
 	desenhaEscadas(0);
 	desenhaTelhado(1);
@@ -45,7 +46,6 @@ void display(void) {
 	desenhaFocosExteriores();
 	desenhaLuzesInterior();
 	drawSkybox();
-	desenhaTapete();
 	drawFog();
 	
 	desenhaParedePrincipal();

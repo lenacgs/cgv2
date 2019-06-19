@@ -60,13 +60,13 @@ void desenhaQuadrado(GLfloat tam, GLfloat r, GLfloat g, GLfloat b, GLint text, G
 				glTexCoord2f(80.0f, 0.0f); glVertex2f(0+tam , 0-tam );
 			}
 		}
-		else if (tipo==0){
+		else if (tipo == 0){
 			glTexCoord2f(0.0f, 0.0f); glVertex2f(0-tam , 0-tam );
 			glTexCoord2f(0.0f, 15.0f); glVertex2f(0-tam , 0+tam );
 			glTexCoord2f(15.0f, 15.0f); glVertex2f(0+tam , 0+tam );
 			glTexCoord2f(15.0f, 0.0f); glVertex2f(0+tam , 0-tam );
 		}
-		else if (tipo ==2){
+		else if (tipo == 2){
 			glTexCoord2f(0.0f, 0.0f); glVertex2f(0-tam , 0-tam );
 			glTexCoord2f(0.0f, 2.0f); glVertex2f(0-tam , 0+tam );
 			glTexCoord2f(2.0f, 2.0f); glVertex2f(0+tam , 0+tam );
@@ -116,7 +116,7 @@ void desenhaQuadrado(GLfloat tam, GLfloat r, GLfloat g, GLfloat b, GLint text, G
 			glVertex2f(0+tam , 0+tam );
 			glVertex2f(0+tam , 0-tam );
 		}
-		else if (tipo == -1){
+		else if (tipo == -1) {
 			glVertex2f(0-tam , 0-tam );
 			glVertex2f(0-tam , 0+tam );
 			glVertex2f(0+tam , 0+tam );
@@ -354,6 +354,21 @@ void desenhaPorta(){
 			glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 56, 0);
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(30, 56, 0);
 			glTexCoord2f(1.0f, 0.0f); glVertex3f(30, 0, 0);
+		glEnd();
+	glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
+}
+
+void desenhaLareira() {
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, textures[1]);
+	glPushMatrix();
+		glBegin(GL_QUADS);
+			
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, 0);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f(30, 0, 0);
+			glTexCoord2f(1.0f, 1.0f); glVertex3f(30, 15, 0);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 15, 0);
 		glEnd();
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);

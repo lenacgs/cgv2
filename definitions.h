@@ -1,12 +1,16 @@
 #define DEBUG
-#include <windows.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
 #include <math.h>
 #include <vector>
+#ifdef __APPLE__
+#include <OpenGL/OpenGL.h>
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
-
+#include <windows.h>
+#endif
 
 #define PI	3.14159265359
 
@@ -48,3 +52,4 @@ void desenhaAltar();
 void desenhaChao();
 void desenhaTapete();
 void drawFog();
+void desenhaLareira();
