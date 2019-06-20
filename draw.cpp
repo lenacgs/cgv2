@@ -60,13 +60,13 @@ void desenhaQuadrado(GLfloat tam, GLfloat r, GLfloat g, GLfloat b, GLint text, G
 				glTexCoord2f(80.0f, 0.0f); glVertex2f(0+tam , 0-tam );
 			}
 		}
-		else if (tipo==0){
+		else if (tipo == 0){
 			glTexCoord2f(0.0f, 0.0f); glVertex2f(0-tam , 0-tam );
 			glTexCoord2f(0.0f, 15.0f); glVertex2f(0-tam , 0+tam );
 			glTexCoord2f(15.0f, 15.0f); glVertex2f(0+tam , 0+tam );
 			glTexCoord2f(15.0f, 0.0f); glVertex2f(0+tam , 0-tam );
 		}
-		else if (tipo ==2){
+		else if (tipo == 2){
 			glTexCoord2f(0.0f, 0.0f); glVertex2f(0-tam , 0-tam );
 			glTexCoord2f(0.0f, 2.0f); glVertex2f(0-tam , 0+tam );
 			glTexCoord2f(2.0f, 2.0f); glVertex2f(0+tam , 0+tam );
@@ -116,7 +116,7 @@ void desenhaQuadrado(GLfloat tam, GLfloat r, GLfloat g, GLfloat b, GLint text, G
 			glVertex2f(0+tam , 0+tam );
 			glVertex2f(0+tam , 0-tam );
 		}
-		else if (tipo == -1){
+		else if (tipo == -1) {
 			glVertex2f(0-tam , 0-tam );
 			glVertex2f(0-tam , 0+tam );
 			glVertex2f(0+tam , 0+tam );
@@ -356,6 +356,88 @@ void desenhaPorta(){
 		glEnd();
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
+}
+
+void drawCube(GLfloat width, GLfloat height, GLfloat depth) { //draws a cube
+
+	glBegin(GL_QUADS);
+
+		//back face
+		glNormal3i(0, 0, -1);
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, 0);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(width, 0, 0);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(width, height, 0);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(0, height, 0);
+
+		//left face
+		glNormal3i(-1, 0, 0);
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, 0);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(0, height, 0);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(0, height, depth);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(0, 0, depth);
+
+		//front face
+		glNormal3i(0, 0, 1);
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, depth);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(0, height, depth);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(width, height, depth);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(width, 0, depth);
+
+		//right face
+		glNormal3i(1, 0, 0);
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(width, 0, depth);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(width, height, depth);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(width, height, 0);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(width, 0, 0);
+
+		//up face
+		glNormal3i(0, 1, 0);
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(0, height, 0);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(width, height, 0);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(width, height, depth);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(0, height, depth);
+
+		//down face
+		glNormal3i(0, -1, 0);
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, 0);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(width, 0, 0);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(width, 0, depth);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(0, 0, depth);		
+	glEnd();
+}
+
+void desenhaLareira() {
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, textures[1]);
+	
+	glPushMatrix();
+		glTranslatef(111, -1, 250);
+		glRotatef(90, 0, 1, 0);
+		
+		glMaterialfv(GL_FRONT, GL_AMBIENT, whiteAmb);
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, whiteDif);
+		drawCube(70, 35, 3);
+
+		drawCube(10, 35, 15);
+
+		glPushMatrix();
+			glTranslatef(60, 0, 0);
+			drawCube(10, 35, 15);
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(10, 0, 0);
+			drawCube(50, 7, 15);
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(10, 28, 0);
+			drawCube(50, 7, 15);
+		glPopMatrix();
+	glPopMatrix();
+
+	glDisable(GL_TEXTURE_2D);
+	showParticulas(particulas, -225, 7, 120);
 }
 
 void desenhaJanela(){

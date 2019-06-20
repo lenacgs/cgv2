@@ -1,14 +1,22 @@
+#ifndef HEADER_H
+#define HEADER_H
+
 #define DEBUG
-#include <windows.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
 #include <math.h>
 #include <vector>
+#ifdef __APPLE__
+#include <OpenGL/OpenGL.h>
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
-
+#include <windows.h>
+#endif
 
 #define PI	3.14159265359
+#define MAX_PARTICULAS 1000
 
 extern GLint wScreen, hScreen;
 extern GLfloat obsPx, obsPy, obsPz;
@@ -25,6 +33,19 @@ extern GLfloat fogColor[];
 extern GLuint skybox[6];
 extern GLuint textures[8];
 
+
+typedef struct _particula {
+	float tam;
+	float vida;
+	float fade;
+	GLfloat vx, vy, vz;
+	GLfloat x, y, z;
+	GLfloat ax, ay, az;
+	GLfloat r, g, b;
+	GLfloat piy, pix, piz;
+} Particula;
+
+extern Particula particulas[MAX_PARTICULAS];
 void initVariables();
 void initTextures();
 void initLights();
@@ -45,7 +66,11 @@ void desenhaLampada (bool flag, bool flag2);
 void desenhaFocosExteriores();
 void desenhaLuzesInterior();
 void desenhaAltar(GLint text, GLint tipo, bool flag);
-void desenhaChao();
 void desenhaAltarAgua();
+void desenhaChao();
 void desenhaTapete();
 void drawFog();
+void desenhaLareira();
+void showParticulas(Particula * particula, GLfloat px, GLfloat py, GLfloat pz);
+void initParticulas(Particula * particula);
+#endif
