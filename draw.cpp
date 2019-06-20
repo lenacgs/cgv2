@@ -440,6 +440,25 @@ void desenhaLareira() {
 	showParticulas(particulas, -225, 7, 120);
 }
 
+void desenhaCama() {
+
+	glPushMatrix();
+		glTranslatef(111, -1, 423);
+		glRotatef(90, 0, 1, 0);
+		drawCube(50, 30, 5);
+		glMaterialfv(GL_FRONT, GL_AMBIENT, chromeAmb);
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, chromeDif);
+
+		glMaterialfv(GL_FRONT, GL_AMBIENT, whiteAmb);
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, whiteDif);
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, textures[8]);
+		glTranslatef(0, 0, 5);
+		drawCube(50, 10, 40);
+		glDisable(GL_TEXTURE_2D);
+	glPopMatrix();
+}
+
 void desenhaJanela(){
 
 	glPushMatrix();

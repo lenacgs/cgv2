@@ -31,7 +31,7 @@ extern GLint retract;
 extern GLfloat fogColor[];
 
 extern GLuint skybox[6];
-extern GLuint textures[8];
+extern GLuint textures[9];
 
 
 typedef struct _particula {
@@ -73,4 +73,5 @@ void drawFog();
 void desenhaLareira();
 void showParticulas(Particula * particula, GLfloat px, GLfloat py, GLfloat pz);
 void initParticulas(Particula * particula);
+void desenhaCama();
 #endif
