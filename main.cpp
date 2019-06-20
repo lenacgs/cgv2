@@ -16,7 +16,7 @@ bool lights1, lights2;
 int mouseX, mouseY;
 
 GLuint skybox[6];
-GLuint textures[7];
+GLuint textures[8];
 
 void drawFog() {
 	glFogfv(GL_FOG_COLOR, fogColor);
@@ -37,7 +37,7 @@ void display(void) {
 
 	initLights();
 	//drawEixos();
-	desenhaAltar();
+	desenhaAltar(3,2,true);
 	desenhaEscadas(0);
 	desenhaTelhado(1);
 	desenhaChao();
@@ -45,7 +45,7 @@ void display(void) {
 	desenhaFocosExteriores();
 	desenhaLuzesInterior();
 	drawSkybox();
-	desenhaTapete();
+	desenhaAltarAgua();
 	drawFog();
 	
 	desenhaParedePrincipal();
@@ -67,7 +67,7 @@ void updatePosition(){
 
 void keyboardFunction(unsigned char key, int x, int y) {
 	switch (key) {
-		// MOVEMENT
+		// MOVIMENTO
 		case 'w':
 		case 'W':
 			obsPx += sens[0] * cos(phi);
@@ -101,6 +101,8 @@ void keyboardFunction(unsigned char key, int x, int y) {
 			obsPy -= 2;
 			updatePosition();
 			break;
+		
+		// RETRAI / EXPANDE ESCADAS
 		case 'r':
 		case 'R':
 			//usamos 4 estados para impedir que o utilizador feche a meio de abrir ou vice versa
@@ -109,6 +111,9 @@ void keyboardFunction(unsigned char key, int x, int y) {
 			else if(retract == 2) //2- pode abrir
 				retract = 0; //3- sinal para abrir
 			break;
+			
+		// LUZES
+		
 		case 'l':
 		case 'L':
 			lights1=!lights1;
@@ -141,6 +146,8 @@ void keyboardFunction(unsigned char key, int x, int y) {
 				glDisable(GL_LIGHT7);
 			}
 			break;
+			
+		// NEVOEIRO
 		case 'f':
 		case 'F':
 			fog=!fog;
@@ -149,59 +156,8 @@ void keyboardFunction(unsigned char key, int x, int y) {
 			else
 				glDisable(GL_FOG);
 			break;
-		 // LIGHTS
-		/*case '0':
-			if(light[0]){
-				glDisable(GL_LIGHT7);
-				light[0] = 0;
-			}
-			else{
-				glEnable(GL_LIGHT7);
-				light[0] = 1;
-			}
-			break;
-
-		case '1':
-			if(light[1]){
-				glDisable(GL_LIGHT0);
-				light[1] = 0;
-			}
-			else{
-				glEnable(GL_LIGHT0);
-				light[1] = 1;
-			}
-			break;
-		case '2':
-			if(light[2]){
-				glDisable(GL_LIGHT1);
-				light[2] = 0;
-			}
-			else{
-				glEnable(GL_LIGHT1);
-				light[2] = 1;
-			}
-			break;
-		case '3':
-			if(light[3]){
-				glDisable(GL_LIGHT2);
-				light[3] = 0;
-			}
-			else{
-				glEnable(GL_LIGHT2);
-				light[3] = 1;
-			}
-			break;
-		case '4':
-			if(light[4]){
-				glDisable(GL_LIGHT3);
-				light[4] = 0;
-			}
-			else{
-				glEnable(GL_LIGHT3);
-				light[4] = 1;
-			}
-			break; */
-		// EXITING
+			
+		// EXIT
 		case 27:
 			exit(0);
 			break;

@@ -3,6 +3,8 @@
 
 RgbImage imag;
 
+Particle  particula1[MAX_PARTICULAS];
+
 void initVariables(void) {
 	wScreen = glutGet(GLUT_SCREEN_WIDTH);
 	hScreen = glutGet(GLUT_SCREEN_HEIGHT);
@@ -206,6 +208,20 @@ void initTextures() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	imag.LoadBmpFile("Images/tapete.bmp");
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+		imag.GetNumCols(),
+		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+		imag.ImageData());
+		
+	//AGUA
+	glGenTextures(1, &textures[7]);
+	glBindTexture(GL_TEXTURE_2D, textures[7]);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	imag.LoadBmpFile("Images/water.bmp");
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
 		imag.GetNumCols(),
 		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,

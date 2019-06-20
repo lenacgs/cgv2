@@ -23,7 +23,7 @@ extern GLint retract;
 extern GLfloat fogColor[];
 
 extern GLuint skybox[6];
-extern GLuint textures[7];
+extern GLuint textures[8];
 
 void initVariables();
 void initTextures();
@@ -44,7 +44,8 @@ void desenhaJanela();
 void desenhaLampada (bool flag, bool flag2);
 void desenhaFocosExteriores();
 void desenhaLuzesInterior();
-void desenhaAltar();
+void desenhaAltar(GLint text, GLint tipo, bool flag);
 void desenhaChao();
+void desenhaAltarAgua();
 void desenhaTapete();
 void drawFog();

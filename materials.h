@@ -125,7 +125,7 @@ GLint  blackRubberCoef = 0.078125 * 128;
 GLfloat  cyanRubberAmb[] = { 0.0 ,0.05 ,0.05 };
 GLfloat  cyanRubberDif[] = { 0.4 ,0.5 ,0.5 };
 GLfloat  cyanRubberSpec[] = { 0.04 ,0.7 ,0.7 };
-GLint  cyanRubberCoef = 0.078125 * 128;
+GLfloat  cyanRubberCoef = 0.078125 * 128;
 
 GLfloat  greenRubberAmb[] = { 0.0 ,0.05 ,0.0 };
 GLfloat  greenRubberDif[] = { 0.4 ,0.5 ,0.4 };
