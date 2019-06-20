@@ -16,7 +16,7 @@ bool lights1, lights2;
 int mouseX, mouseY;
 
 GLuint skybox[6];
-GLuint textures[7];
+GLuint textures[8];
 
 void drawFog() {
 	glFogfv(GL_FOG_COLOR, fogColor);
@@ -57,12 +57,8 @@ void updatePosition(){
 	lookx = obsPx + sens[0] * cos(phi);
 	lookz = obsPz - sens[0] * sin(phi);
 	looky = obsPy;
-	if(obsPx < 100 && obsPx > 25 && obsPz < 165 && obsPz > 125){
-		lookz++;
-	}
-	else if(!(obsPx < 100 && obsPx > 25 && obsPz < 165 && obsPz > 125)){
-		lookz--;
-	}
+
+	printf("obsPx = %f\tobsPy = %f\tobsPz = %f\n", obsPx, obsPy, obsPz);
 }
 
 void keyboardFunction(unsigned char key, int x, int y) {
