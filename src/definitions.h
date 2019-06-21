@@ -41,9 +41,6 @@ typedef struct _particula {
 	float fade;
 	GLfloat vx, vy, vz;
 	GLfloat x, y, z;
-	GLfloat ax, ay, az;
-	GLfloat r, g, b;
-	GLfloat piy, pix, piz;
 } Particula;
 
 extern Particula particulas[MAX_PARTICULAS];

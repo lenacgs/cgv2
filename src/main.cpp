@@ -65,7 +65,6 @@ void display(void) {
 void updatePosition(){
 	lookx = obsPx + sens[0] * cos(phi);
 	lookz = obsPz - sens[0] * sin(phi);
-	looky = obsPy;
 
 	printf("obsPx = %f\tobsPy = %f\tobsPz = %f\n", obsPx, obsPy, obsPz);
 }
@@ -95,15 +94,6 @@ void keyboardFunction(unsigned char key, int x, int y) {
 		case 'D':
 			obsPx -= sens[0] * sin(-phi);
 			obsPz += sens[0] * cos(-phi);
-			updatePosition();
-			break;
-		case 32:
-			obsPy += 2;
-			updatePosition();
-			break;
-		case 'z':
-		case 'Z':
-			obsPy -= 2;
 			updatePosition();
 			break;
 		
