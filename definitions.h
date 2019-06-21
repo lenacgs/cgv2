@@ -29,6 +29,7 @@ extern bool lights1;
 extern bool lights2;
 extern GLint retract;
 extern GLfloat fogColor[];
+extern GLfloat Irotate;
 
 extern GLuint skybox[6];
 extern GLuint textures[9];
@@ -74,4 +75,6 @@ void desenhaLareira();
 void showParticulas(Particula * particula, GLfloat px, GLfloat py, GLfloat pz);
 void initParticulas(Particula * particula);
 void desenhaCama();
+void drawMirror();
+void drawScene();
 #endif

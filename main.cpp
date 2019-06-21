@@ -10,6 +10,7 @@ GLfloat lookx, looky, lookz;
 GLfloat tetha, phi;
 GLfloat angZoom;
 GLfloat sens[2];
+GLfloat Irotate;
 bool fog;
 GLfloat fogColor[] = { 0.3, 0.3, 0.3, 1 };
 bool lights1, lights2;
@@ -24,19 +25,8 @@ void drawFog() {
 	glFogf(GL_FOG_DENSITY, 0.0005);
 }
 
-void display(void) {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-	glViewport(0, 0, wScreen, hScreen);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(angZoom, (float)wScreen / hScreen, 0.1, 5000);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	gluLookAt(obsPx, obsPy, obsPz, lookx, looky, lookz, 0, 1, 0);
-	glClearStencil(0);
-
-	initLights();
-	//drawEixos();
+void drawScene() {
+	// drawEixos();
 	desenhaLareira();
 	desenhaAltar(3,2,true);
 	desenhaEscadas(0);
@@ -51,7 +41,24 @@ void display(void) {
 	desenhaCama();
 	
 	desenhaParedePrincipal();
+}
+
+void display(void) {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glViewport(0, 0, wScreen, hScreen);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(angZoom, (float)wScreen / hScreen, 0.1, 5000);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(obsPx, obsPy, obsPz, lookx, looky, lookz, 0, 1, 0);
+	glClearStencil(0);
+
+	initLights();
+
+	drawMirror();
 	
+	drawScene();
 	glutSwapBuffers();
 }
 
@@ -179,6 +186,7 @@ void mouseFunction(int x, int y) {
 }
 
 void idle(void) {
+	Irotate++;
 	glutPostRedisplay();
 }
 

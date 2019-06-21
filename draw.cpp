@@ -416,28 +416,35 @@ void desenhaLareira() {
 		
 		glMaterialfv(GL_FRONT, GL_AMBIENT, whiteAmb);
 		glMaterialfv(GL_FRONT, GL_DIFFUSE, whiteDif);
-		drawCube(70, 35, 3);
-
-		drawCube(10, 35, 15);
-
+		
 		glPushMatrix();
-			glTranslatef(60, 0, 0);
-			drawCube(10, 35, 15);
+		glTranslatef(15, 0, 0);
+			drawCube(40, 25, 3);
 		glPopMatrix();
 
 		glPushMatrix();
-			glTranslatef(10, 0, 0);
-			drawCube(50, 7, 15);
+			glTranslatef(15, 0, 0);
+			drawCube(10, 25, 15);
 		glPopMatrix();
 
 		glPushMatrix();
-			glTranslatef(10, 28, 0);
-			drawCube(50, 7, 15);
+			glTranslatef(45, 0, 0);
+			drawCube(10, 25, 15);
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(25, 0, 0);
+			drawCube(20, 7, 15);
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(25, 18, 0);
+			drawCube(20, 7, 15);
 		glPopMatrix();
 	glPopMatrix();
 
 	glDisable(GL_TEXTURE_2D);
-	showParticulas(particulas, -225, 7, 120);
+	showParticulas(particulas, -213, 7, 120);
 }
 
 void desenhaCama() {
@@ -457,6 +464,54 @@ void desenhaCama() {
 		drawCube(50, 10, 40);
 		glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
+}
+
+void drawMirror() {
+
+	glEnable(GL_STENCIL_TEST);
+	glColorMask(0, 0, 0, 0);
+	glDisable(GL_DEPTH_TEST);
+	glStencilFunc(GL_ALWAYS, 1, 1);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
+	glPushMatrix();
+		glBegin(GL_QUADS);
+			glVertex3f(0, 0, 0);
+			glVertex3f(0, 0, 50);
+			glVertex3f(0, 70, 50);
+			glVertex3f(0, 70, 0);
+		glEnd();
+	glPopMatrix();
+
+	glColorMask(1, 1, 1, 1);
+	glEnable(GL_DEPTH_TEST);
+	glStencilFunc(GL_EQUAL, 1, 1);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
+	glPushMatrix();
+		//desenho da cena invertida
+		glScalef(-1, 1, 1);
+		drawScene();
+	glPopMatrix();
+
+	glDisable(GL_STENCIL_TEST);
+
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, glassAmb);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, glassDif);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glPushMatrix();
+		glBegin(GL_QUADS);
+			glVertex3f(0, 0, 0);
+			glVertex3f(0, 0, 50);
+			glVertex3f(0, 70, 50);
+			glVertex3f(0, 70, 0);
+		glEnd();
+	glPopMatrix();
+
+	glDisable(GL_BLEND);
 }
 
 void desenhaJanela(){
@@ -890,6 +945,8 @@ void desenhaAltarAgua(){
 void desenhaAltar(GLint text, GLint tipo, bool flag){
 	//degraus laterais
 	//------------------------------------------------------
+
+		
 	glPushMatrix();
 		glTranslatef(440,4,300);
 		glRotatef(90,0,1,0);
@@ -958,7 +1015,7 @@ void desenhaAltar(GLint text, GLint tipo, bool flag){
 			}
 			else{
 				glEnable(GL_BLEND);
-    			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 				glMaterialfv(GL_FRONT, GL_AMBIENT, cyanRubberAmb);
 				glMaterialfv(GL_FRONT, GL_DIFFUSE, cyanRubberDif);
 				glMaterialfv(GL_FRONT, GL_SPECULAR, cyanRubberSpec);
@@ -996,31 +1053,34 @@ void desenhaAltar(GLint text, GLint tipo, bool flag){
 	//frame
 	glPushMatrix();
 		glTranslatef(407,38,300);
-		glRotatef(90,0,1,0);
-		desenhaDegrau(30,30,3,-1,-1);
+		glRotatef(Irotate,0,1,0);
+		glTranslatef(-407,-38,-300);
+		glPushMatrix();
+			glTranslatef(407,38,300);
+			glRotatef(90,0,1,0);
+			desenhaDegrau(30,30,3,-1,-1);
+		glPopMatrix();
+
+		//quadro
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, textures[4]);
+		glPushMatrix();
+			glTranslatef(413.1,8,330);
+			glRotatef(-90,0,1,0);
+			glRotatef(90,0,0,1);
+			glBegin(GL_QUADS);
+				glNormal3i(0,1,0);
+				glMaterialfv(GL_FRONT, GL_AMBIENT, whiteAmb);
+				glMaterialfv(GL_FRONT, GL_DIFFUSE, whiteDif);
+				glMaterialfv(GL_FRONT, GL_SPECULAR, whiteSpec);
+				glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, 0);
+				glTexCoord2f(1.0f, 0.0f); glVertex3f(0, 60, 0);
+				glTexCoord2f(1.0f, 1.0f); glVertex3f(60, 60, 0);
+				glTexCoord2f(0.0f, 1.0f); glVertex3f(60, 0, 0);
+			glEnd();
+		glPopMatrix();
+		glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
-	
-	
-	//quadro
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, textures[4]);
-	glPushMatrix();
-		glTranslatef(413.1,8,330);
-		glRotatef(-90,0,1,0);
-		glRotatef(90,0,0,1);
-		glBegin(GL_QUADS);
-			glNormal3i(0,1,0);
-			glMaterialfv(GL_FRONT, GL_AMBIENT, whiteAmb);
-			glMaterialfv(GL_FRONT, GL_DIFFUSE, whiteDif);
-			glMaterialfv(GL_FRONT, GL_SPECULAR, whiteSpec);
-			glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, 0);
-			glTexCoord2f(1.0f, 0.0f); glVertex3f(0, 60, 0);
-			glTexCoord2f(1.0f, 1.0f); glVertex3f(60, 60, 0);
-			glTexCoord2f(0.0f, 1.0f); glVertex3f(60, 0, 0);
-		glEnd();
-	glPopMatrix();
-	glDisable(GL_TEXTURE_2D);
-	
 	}
 }
 

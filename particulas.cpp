@@ -30,10 +30,10 @@ void showParticulas(Particula *particula, GLfloat px, GLfloat py, GLfloat pz) {
 			particula[i].vx /= (particula[i].y) * 5;
 			
 			if (particula[i].vx > 1) {
-				particula[i].vx = 0.01;
+				particula[i].vx = 0.1;
 			}
 			else if (particula[i].vx < -1) {
-				particula[i].vx = -0.01;
+				particula[i].vx = -0.1;
 			}
 
 			particula[i].vida -= particula[i].fade;
@@ -41,9 +41,9 @@ void showParticulas(Particula *particula, GLfloat px, GLfloat py, GLfloat pz) {
 		else {
 			v = frand() + 0.02;
 
-			particula[i].x = px + 0.1*frand()*px;   
-			particula[i].y = py + 0.1*frand()*py;
-			particula[i].z = pz + frand();	
+			particula[i].x = px + frand()*px;   
+			particula[i].y = py + frand()*py;
+			particula[i].z = pz + 0.05*frand()*pz;	
 
 			if (particula[i].x > 0.1 * 0.5 * px + px) {
 				particula[i].vx = v * -frand() * (particula[i].x - (0.1 * 0.5 * px + px)) * 0.025;//.025;

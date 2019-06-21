@@ -8,13 +8,13 @@ void initVariables(void) {
 	wScreen = glutGet(GLUT_SCREEN_WIDTH);
 	hScreen = glutGet(GLUT_SCREEN_HEIGHT);
 
-	obsPx = 130;
+	obsPx = 1050;
 	obsPy = 20;
-	obsPz = 215;
+	obsPz = 285;
 
-	lookx = 300;
+	lookx = 510;
 	looky = 0;
-	lookz = 100;
+	lookz = 300;
 
 	tetha = 3;
 	phi = (GLfloat)PI/2;
@@ -28,6 +28,8 @@ void initVariables(void) {
 	sens[1] = (GLfloat) 0.025;
 
 	initParticulas(particulas);
+
+	Irotate = 0;
 	
 }
 
